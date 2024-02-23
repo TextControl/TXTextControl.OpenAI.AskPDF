@@ -4,7 +4,7 @@ string question = "Is contracting with other partners an option?";
 //string question = "How will disputes be dealt with?";
 //string question = "Can the agreement be changed or modified?";
 
-string pdfPath = "Sample PDFs/services.pdf";
+string pdfPath = "Sample PDFs/SampleContract-Shuttle.pdf";
 
 // load the PDF file
 byte[] pdfDocument = File.ReadAllBytes(pdfPath);

@@ -96,6 +96,24 @@ public static class DocumentProcessing
 		return results.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 	}
 
+	// split a text into chunks
+	private static List<string> CreateChunks(string text, int chunkSize, int overlap)
+	{
+		List<string> chunks = new List<string>();
+
+		// split the text into chunks
+		while (text.Length > chunkSize)
+		{
+			chunks.Add(text.Substring(0, chunkSize));
+			text = text.Substring(chunkSize - overlap);
+		}
+
+		// add the last chunk
+		chunks.Add(text);
+
+		return chunks;
+	}
+
 	// split a PDF document into chunks
 	public static List<string> Chunk(byte[] pdfDocument, int chunkSize, int overlap = 1)
 	{
@@ -115,19 +133,8 @@ public static class DocumentProcessing
 			// remove line breaks
 			string pdfText = tx.Text.Replace("\r\n", " ");
 
-			List<string> chunks = new List<string>();
-
-			// split the text into chunks
-			while (pdfText.Length > chunkSize)
-			{
-				chunks.Add(pdfText.Substring(0, chunkSize));
-				pdfText = pdfText.Substring(chunkSize - overlap);
-			}
-
-			// add the last chunk
-			chunks.Add(pdfText);
-
-			return chunks;
+			// call the extracted chunk creation method
+			return CreateChunks(pdfText, chunkSize, overlap);
 		}
 	}
 
